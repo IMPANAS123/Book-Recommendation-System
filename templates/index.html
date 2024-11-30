@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📚 Book Recommendation Chatbot 📖</title>
+  <link rel="icon" href="logo.png" type="image/png" width="250px",height="100px">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      document.getElementById('sendButton').addEventListener('click', function() {
+          var userInput = document.getElementById("userInput").value;
+  
+          fetch("/", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/x-www-form-urlencoded"
+              },
+              body: "user_input=" + encodeURIComponent(userInput)
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.message) {
+                  document.getElementById("output").innerHTML = "<pre>" + data.message + "</pre>";
+              } else {
+                  document.getElementById("output").innerHTML = "No results found.";
+              }
+          })
+          .catch(error => {
+              console.error("Error:", error);
+              document.getElementById("output").innerHTML = "An error occurred.";
+          });
+      });
+  });
+  
+  </script>
+  <style>
+    /* Card styling */
+    .masonry {
+      display: grid;
+      grid-template-columns: repeat(4, 300px);
+      gap: 20px;
+      justify-content: center;
+      align-items: start;
+      margin: 0 auto;
+    }
+    
+    /* General styling remains unchanged for other elements */
+    body {
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Light Mode */
+    body.light-mode {
+        background-color: white;
+        color: black;
+        background: url("Background.png");
+        background-size: cover;  /* Ensure the background covers the full screen */
+        background-position: center;  /* Center the background image */
+    }
+    
+    /* Dark Mode */
+    body.dark-mode {
+        background-color: black;
+        color: white;
+    }
+    
+
+  /* Ensuring other elements are not affected */
+  #output {
+    background-color: #ffffff; /* Resetting to white */
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+    .item {
+      background-color: #ffffff;
+      padding: 20px;
+      box-sizing: border-box;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      transition: transform 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2em;
+      color: #fff;
+    }
+
+    .item:hover {
+      transform: translateY(-10px);
+    }
+
+    .item img {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Custom grid item styles */
+    .item1 { background-color: #ff6f61; height:425px; }
+    .item2 { background-color: #6b5b95; height:425px;}
+    .item3 { background-color: #88b04b; height:425px;}
+    .item4 { background-color: #d65076; height:425px;}
+    .item5 { background-color: #ffb347; height:425px;}
+    .item6 { background-color: #45b8ac; height:425px;}
+    .item7 { background-color: #e94b3c; height:425px;}
+    .item8 { background-color: #6c5b7b; height:425px;}
+    .item9 { background-color: #00a86b; height:430px;}
+    .item11 { grid-column: span 2; background-color: #b565a7;height:430px; }
+    .item10 { width: 300px; height: 400px; background-color: #b565a7; height:430px;}
+    #output {
+      min-height: 100px; /* Minimum height */
+      max-height: 500px; /* Optional: set a max height */
+      overflow-y: auto;  /* Enable scrolling if content exceeds max height */
+    }
+    .output-box {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0; /* Light border color */
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-top: 20px;
+      width: 100%;
+      max-width: 800px; /* Make sure the box doesn't become too wide */
+      margin-left: auto;
+      margin-right: auto;
+    }
+  
+    #output-content {
+      padding-top: 10px;
+    }
+  
+    .user-input {
+      background-color: #f0f4f8;
+      border: 1px solid #e2e8f0;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      font-size: 1.1rem;
+    }
+  
+    .output-message {
+      background-color: #e6fffa;
+      border: 1px solid #38b2ac;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      color: #2c7a7b;
+    }
+  
+    h2 {
+      color: #4a5568;
+      font-size: 1.5rem;
+    }
+  
+    .message-container {
+      margin-bottom: 20px;
+    }
+  
+    .output-content p {
+      margin-top: 5px;
+      font-size: 1rem;
+    }
+    
+  </style>
+</head>
+
+<body class="bg-gray-100 text-gray-800 h-screen flex flex-col">
+  <!-- Header Section -->
+  <header class="bg-blue-600 text-white text-center py-6">
+    <h1 class="text-3xl font-bold">📚 Book Recommendation Chatbot 📖</h1>
+    <p class="mt-2 text-lg">Find your next favorite book here!</p>
+    <button id="ldBtn" class="duration-300 delay-150 hover:delay-300 ease-in-out p-2 bg-blue-600 rounded-lg items-end">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-white">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+      </svg>
+  </header>
+
+  <!-- Main Content Section -->
+  <main class="flex-grow container mx-auto px-4 py-8 flex flex-col justify-center items-center">
+    <section class="text-center w-full mb-8">
+      <h2 class="text-2xl font-semibold" color="gray">Get Personalized Recommendations</h2>
+      <p class="text-gray-600 mt-2" color="gray">Type a genre, keyword, or greet me below to start!</p>
+      <div class="mt-4 flex justify-center items-center">
+        <input type="text" id="userInput" class="border rounded-lg py-2 px-4 w-2/3 md:w-1/2 lg:w-1/3" placeholder="Type your request..." />
+        <button id="sendButton" class="bg-blue-500 text-white px-4 py-2 rounded-lg ml-4">Send</button>
+      </div>
+    </section>
+
+    <!-- Output Section -->
+    <section id="output-content" class="output-box text-center mt-8 p-6 border rounded-lg shadow-md w-full md:w-3/4 lg:w-2/3 mx-auto">
+        <h2 class="text-xl font-semibold">Recommendations</h2>
+        <div class="mt-4">
+          <p class="text-lg">Your recommendations will appear here.</p>
+        </div>
+      </section>
+      
+
+  </main>
+
+  <!-- Masonry Grid Section for Images -->
+  <div class="masonry">
+    <div class="item item1"><img src="{{ url_for('static', filename='images/Image1.png') }}" alt="Image 1"></div>
+    <div class="item item2"><img src="{{ url_for('static', filename='images/Image2.png') }}" alt="Image 2"></div>
+    <div class="item item3"><img src="{{ url_for('static', filename='images/Image3.png') }}" alt="Image 3"></div>
+    <div class="item item4"><img src="{{ url_for('static', filename='images/Image4.png') }}" alt="Image 4"></div>
+    <div class="item item5"><img src="{{ url_for('static', filename='images/Image5.png') }}" alt="Image 5"></div>
+    <div class="item item6"><img src="{{ url_for('static', filename='images/Image6.png') }}" alt="Image 6"></div>
+    <div class="item item7"><img src="{{ url_for('static', filename='images/Image7.png') }}" alt="Image 7"></div>
+    <div class="item item8"><img src="{{ url_for('static', filename='images/Image8.png') }}" alt="Image 8"></div>
+    <div class="item item9"><img src="{{ url_for('static', filename='images/Image9.png') }}" alt="Image 9"></div>
+    <div class="item item11"><img src="{{ url_for('static', filename='images/Image11.png') }}" alt="Image 11"></div>
+    <div class="item item10"><img src="{{ url_for('static', filename='images/Image10.png') }}" alt="Image 10"></div>
+  </div>
+  <br>
+  <!-- Footer Section -->
+  <footer class="bg-blue-600 text-white text-center py-4">
+    <p>&copy; 2024 Book Recommendations. All rights reserved.</p>
+  </footer>
+ <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    let bodyy = document.querySelector("body");
+    let bttn = document.querySelector("#ldBtn");
+    let current_mode = "light";
+
+    // Toggle button functionality for light/dark mode
+    const btnclick = () => {
+        if (current_mode === "light") {
+            current_mode = "dark";
+            bodyy.style.backgroundColor = "black";
+            bodyy.style.color = "black";
+            bttn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-white">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+                </svg>`;
+        } else {
+            current_mode = "light";
+            bodyy.style.backgroundColor = "white";
+            bodyy.style.color = "black";
+            bttn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-black">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+                </svg>`;
+        }
+    };
+
+    // Attach event listener to the toggle button
+    bttn.addEventListener("click", btnclick);
+
+    // Ensure event listener is added only once
+    const sendButton = document.getElementById("sendButton");
+    sendButton.removeEventListener("click", handleSendButtonClick); // Remove any existing listener
+    sendButton.addEventListener("click", handleSendButtonClick);   // Add the listener only once
+
+    // Function to handle the send button click
+    function handleSendButtonClick(event) {
+        event.preventDefault(); // Prevent form submission
+
+        const userInput = document.getElementById("userInput").value;
+
+        // Send the POST request
+        fetch("/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "user_input=" + encodeURIComponent(userInput)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Append the new output dynamically without duplication
+            const outputContent = document.getElementById("output-content");
+
+            // Clear existing output to avoid duplication
+            outputContent.innerHTML = "";
+
+            if (data.message) {
+                const userMessage = document.createElement('div');
+                userMessage.classList.add('message-container');
+                userMessage.style.textAlign = "center"; // Center text
+                userMessage.innerHTML = `
+                    <div>
+                        <strong>User Input:</strong> ${userInput}
+                    </div>
+                    <div>
+                        <strong>Recommendation:</strong><br>
+                        ${data.message.replace(/\n/g, "<br>")}
+                    </div>
+                `;
+                outputContent.appendChild(userMessage);
+            } else {
+                outputContent.innerHTML = "<p>No results found.</p>";
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            document.getElementById("output-content").innerHTML = "<p>An error occurred.</p>";
+        });
+    }
+});
+
+</script>
+
+  
+</body>
+
+</html>
