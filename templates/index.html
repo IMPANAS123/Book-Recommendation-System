@@ -88,10 +88,20 @@
       color: #fff;
     }
 
-    .item:hover {
+    .item:hover ,.wrapper::before,.wrapper::after {
       transform: translateY(-10px);
+      opacity:1;
     }
-
+    .item:hover .wrapper::after{
+      height:120px;
+    }
+    .title{
+      width:100%;
+      transition:transform 0.5s;
+    }
+    .item:hover.title{
+      transform:translate3d(0%,-50px,100px);
+    }
     .item img {
       width: 100%;
       height: 100%;

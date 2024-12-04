@@ -7,6 +7,7 @@ from sklearn.model_selection import train_test_split
 import sys
 import ratings  # Import ratings.py
 import genre  # Import genre.py
+import re
 
 # Add path to ratings.py to make sure it can be imported
 sys.path.append(r"C:\Users\Ananya\OneDrive\Documents\Mini project")
@@ -155,31 +156,30 @@ def recommend_books():
                                 f"{book['Book-Title']} by {book['Book-Author']}\n"
                             )
 
-            elif "genre" in user_input:  # Genre-based recommendations
-                genre_name = user_input.split("genre")[-1].strip().lower()
-                # Match only the genre name, without "books" or extra text
-                genre_name_cleaned = " ".join(
-                    [word for word in genre_name.split() if word not in ["books"]]
-                )
+            elif "genre" in user_input.lower():  # Genre-based recommendations
 
-                # Search the data for the genre, matching case-insensitively
-                genre_books = genre_data[
-                    genre_data["Genre"].str.contains(
-                        genre_name_cleaned, case=False, na=False
+                # Extract the genre name after the keyword "genre"
+                genre_match = re.search(r"genre\s+(.*?!)", user_input, re.IGNORECASE)
+                if genre_match:
+                    genre_name = genre_match.group(1).strip().lower()
+                    # Remove "books" or extra text
+                    genre_name_cleaned = " ".join(
+                        [word for word in genre_name.split() if word not in ["books"]]
                     )
-                ]
 
-                if genre_books.empty:
-                    message = (
-                        f"No books found for genre: {genre_name_cleaned.capitalize()}"
-                    )
-                else:
-                    message = f"Recommended Books for Genre: {genre_name_cleaned.capitalize()}\n"
-                    for _, book in genre_books.iterrows():
-                        message += f"{book['Book_Title']} - {book['Genre']}\n"
+                    # Search the data for the genre, matching case-insensitively
+                    genre_books = genre_data[
+                        genre_data["Genre"].str.contains(
+                            genre_name_cleaned, case=False, na=False
+                        )
+                    ]
 
-            else:
-                message = "Invalid input. Please enter a valid request (e.g., 'top 5 books', 'bottom 5 books', or 'recommend books by <author>')."
+                    if genre_books.empty:
+                        message = f"No books found for genre: {genre_name_cleaned.capitalize()}"
+                    else:
+                        message = f"Recommended Books for Genre: {genre_name_cleaned.capitalize()}\n"
+                        for _, book in genre_books.iterrows():
+                            message += f"{book['Book_Title']} - {book['Genre']}\n"
 
         except Exception as e:
             message = f"Error processing the request: {str(e)}"
