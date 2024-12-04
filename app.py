@@ -9,10 +9,6 @@ import ratings  # Import ratings.py
 import genre  # Import genre.py
 import re
 
-# Add path to ratings.py to make sure it can be imported
-sys.path.append(r"C:\Users\Ananya\OneDrive\Documents\Mini project")
-
-
 # Initialize Flask app
 app = Flask(__name__)
 
@@ -158,28 +154,29 @@ def recommend_books():
 
             elif "genre" in user_input.lower():  # Genre-based recommendations
 
-                # Extract the genre name after the keyword "genre"
-                genre_match = re.search(r"genre\s+(.*?!)", user_input, re.IGNORECASE)
-                if genre_match:
-                    genre_name = genre_match.group(1).strip().lower()
-                    # Remove "books" or extra text
-                    genre_name_cleaned = " ".join(
-                        [word for word in genre_name.split() if word not in ["books"]]
+                # Extract the genre name by splitting the input based on "genre"
+                genre_name = user_input.lower().split("genre")[1].strip()
+
+                # Remove "books" or extra text from the genre name
+                genre_name_cleaned = " ".join(
+                    [word for word in genre_name.split() if word not in ["books"]]
+                )
+
+                # Search the data for the genre, matching case-insensitively
+                genre_books = genre_data[
+                    genre_data["Genre"].str.contains(
+                        genre_name_cleaned, case=False, na=False
                     )
+                ]
 
-                    # Search the data for the genre, matching case-insensitively
-                    genre_books = genre_data[
-                        genre_data["Genre"].str.contains(
-                            genre_name_cleaned, case=False, na=False
-                        )
-                    ]
-
-                    if genre_books.empty:
-                        message = f"No books found for genre: {genre_name_cleaned.capitalize()}"
-                    else:
-                        message = f"Recommended Books for Genre: {genre_name_cleaned.capitalize()}\n"
-                        for _, book in genre_books.iterrows():
-                            message += f"{book['Book_Title']} - {book['Genre']}\n"
+                if genre_books.empty:
+                    message = (
+                        f"No books found for genre: {genre_name_cleaned.capitalize()}"
+                    )
+                else:
+                    message = f"Recommended Books for Genre: {genre_name_cleaned.capitalize()}\n"
+                    for _, book in genre_books.iterrows():
+                        message += f"{book['Book_Title']} - {book['Genre']}\n"
 
         except Exception as e:
             message = f"Error processing the request: {str(e)}"
