@@ -149,7 +149,10 @@
       border-radius: 5px;
       font-size: 1.1rem;
     }
-  
+    .intro {
+      color: #32CD32 !important;
+    }
+    
     .output-message {
       background-color: #e6fffa;
       border: 1px solid #38b2ac;
@@ -160,7 +163,7 @@
     }
   
     h2 {
-      color: #4a5568;
+      color: #black;
       font-size: 1.5rem;
     }
   
@@ -187,15 +190,17 @@
         </svg>
       </button>
     </div>
-    <h1 class="text-3xl font-bold">📚 Book Recommendation Chatbot 📖</h1>
+    <h1 class="text-3xl font-bold" style="font-size: 40px;">📚 Book Recommendation Chatbot 📖</h1>
     <p class="mt-2 text-lg">Find your next favorite book here!</p>
   </header>
 
   <!-- Main Content Section -->
   <main class="flex-grow container mx-auto px-4 py-8 flex flex-col justify-center items-center">
     <section class="text-center w-full mb-8">
-      <h2 class="text-2xl font-semibold" color="gray">Get Personalized Recommendations</h2>
-      <p class="text-gray-600 mt-2" color="gray">Type a genre, keyword, or greet me below to start!</p>
+      <div class="intro text-[#32CD32]">
+        <p style="font-size: 30px;">Get Personalized Recommendations</p>
+        <p class="mt-2 text-[#32CD32]">Type a genre, keyword, or greet me below to start!</p>
+      </div>
       <div class="mt-4 flex justify-center items-center">
         <input type="text" id="userInput" class="border rounded-lg py-2 px-4 w-2/3 md:w-1/2 lg:w-1/3" placeholder="Type your request..." />
         <button id="sendButton" class="bg-blue-500 text-white px-4 py-2 rounded-lg ml-4">Send</button>
